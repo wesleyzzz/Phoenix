@@ -18,14 +18,15 @@ public:
 protected:
   virtual Real computeQpResidual() override;
   virtual Real computeQpJacobian() override;
+  virtual Real computeQpOffDiagJacobian(unsigned int jvar) override;
 
-  // const Real _unit_scalor;
   const MaterialProperty<Real> & _scale_factor;
   const bool _has_coupled_precipitate;
   const bool _has_coupled_dissolve;
   const int _sign;
   const VariableValue & _coupled_variable;
   const MaterialProperty<Real> & _solubility;
-  const Real & _Ave_l_p;
+  unsigned int _coupled_variable_offJac;
+
 };
 #endif //PRECIPITATION_LIQUID_H

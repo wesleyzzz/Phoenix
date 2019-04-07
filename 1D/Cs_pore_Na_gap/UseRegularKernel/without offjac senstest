@@ -1,0 +1,130 @@
+Running command: /home/moose/projects/phoenix/phoenix-opt Outputs/csv=true -i peacock_run_exe_tmp_Cs_pore_Na_gap_testJac.i
+Working directory: /home/moose/projects/phoenix/1D/Cs_pore_Na_gap
+
+Framework Information:
+MOOSE Version:           git commit 45146e7 on 2019-03-29
+LibMesh Version:         acc2284690134c38a387602cd042add7031ee064
+PETSc Version:           3.7.6
+Current Time:            Mon Apr  1 12:27:10 2019
+Executable Timestamp:    Mon Apr  1 12:26:48 2019
+
+Parallelism:
+  Num Processors:          1
+  Num Threads:             1
+
+Mesh:
+  Parallel Type:           replicated
+  Mesh Dimension:          1
+  Spatial Dimension:       1
+  Nodes:
+    Total:                 142
+    Local:                 142
+  Elems:
+    Total:                 141
+    Local:                 141
+  Num Subdomains:          3
+  Num Partitions:          1
+
+Nonlinear System:
+  Num DOFs:                286
+  Num Local DOFs:          286
+  Variables:               { "S_precipitate" "S_dissolve" } { "L_dissolve" "L_precipitate" }
+  Finite Element Types:    "LAGRANGE" "LAGRANGE"
+  Approximation Orders:    "FIRST" "FIRST"
+
+Auxiliary System:
+  Num DOFs:                709
+  Num Local DOFs:          709
+  Variables:               "T" "Solid_solubility_Ln" "Liquid_solubility_Ln" "bounds_dummy" { "solubility_liquid"
+                             "solubility_solid" }
+  Finite Element Types:    "LAGRANGE" "LAGRANGE" "LAGRANGE" "LAGRANGE" "MONOMIAL"
+  Approximation Orders:    "FIRST" "FIRST" "FIRST" "FIRST" "CONSTANT"
+
+Execution Information:
+  Executioner:             Transient
+  TimeStepper:             IterationAdaptiveDT
+  Solver Mode:             NEWTON
+
+
+Time Step 0, time = 0
+                dt = 0
+
+
+
+*** Warning ***
+/home/moose/projects/phoenix/1D/Cs_pore_Na_gap/peacock_run_exe_tmp_Cs_pore_Na_gap_testJac.i:153: unused parameter 'Kernels/Insolid_fuel_solute_precipitate/unit_scalor'
+/home/moose/projects/phoenix/1D/Cs_pore_Na_gap/peacock_run_exe_tmp_Cs_pore_Na_gap_testJac.i:170: unused parameter 'Kernels/Insolid_fuel_precipitatate_redissolve/unit_scalor'
+/home/moose/projects/phoenix/1D/Cs_pore_Na_gap/peacock_run_exe_tmp_Cs_pore_Na_gap_testJac.i:202: unused parameter 'Kernels/Inliquid_solute_precipitate/unit_scalor'
+/home/moose/projects/phoenix/1D/Cs_pore_Na_gap/peacock_run_exe_tmp_Cs_pore_Na_gap_testJac.i:218: unused parameter 'Kernels/Inliquid_precipitate_redissolve/unit_scalor'
+
+Postprocessor Values:
++----------------+-----------------------+--------------------------+----------------+----------------+
+| time           | L_dissolve_Ave_side_r | L_precipitate_Ave_side_r | Total_Ln_sum   | dt             |
++----------------+-----------------------+--------------------------+----------------+----------------+
+|   0.000000e+00 |          0.000000e+00 |             0.000000e+00 |   0.000000e+00 |   0.000000e+00 |
++----------------+-----------------------+--------------------------+----------------+----------------+
+
+
+Time Step 1, time = 100
+                dt = 100
+Testing hand-coded Jacobian, if the ratio is
+O(1.e-8), the hand-coded Jacobian is probably correct.
+Run with -snes_test_display to show difference
+of hand-coded and finite difference Jacobian.
+Norm of matrix ratio 0.752571, difference 544688. (user-defined state)
+Norm of matrix ratio 3.74055e-10, difference 0.000270729 (constant state -1.0)
+Norm of matrix ratio 0.470404, difference 385818. (constant state 1.0)
+[0]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+[0]PETSC ERROR: Object is in wrong state
+[0]PETSC ERROR: SNESTest aborts after Jacobian test: it is NORMAL behavior.
+[0]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+[0]PETSC ERROR: Petsc Release Version 3.7.6, Apr, 24, 2017
+[0]PETSC ERROR: /home/moose/projects/phoenix/phoenix-opt on a arch-linux2-c-opt named moose by moose Mon Apr  1 12:27:10 2019
+[0]PETSC ERROR: Configure options --prefix=/opt/moose/petsc-3.7.6/mpich-3.2_gcc-7.2.0-opt --download-hypre=1 --with-ssl=0 --with-debugging=no --with-pic=1 --with-shared-libraries=1 --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack=1 --download-metis=1 --download-parmetis=1 --download-superlu_dist=1 --download-mumps=1 --download-scalapack=1 -CC=mpicc -CXX=mpicxx -FC=mpif90 -F77=mpif77 -F90=mpif90 -CFLAGS="-fPIC -fopenmp" -CXXFLAGS="-fPIC -fopenmp" -FFLAGS="-fPIC -fopenmp" -FCFLAGS="-fPIC -fopenmp" -F90FLAGS="-fPIC -fopenmp" -F77FLAGS="-fPIC -fopenmp"
+[0]PETSC ERROR: #1 SNESSolve_Test() line 127 in /tmp/moose_package_build_temp/petsc-default-mpich-gcc-opt/petsc-3.7.6/src/snes/impls/test/snestest.c
+[0]PETSC ERROR: #2 SNESSolve() line 4005 in /tmp/moose_package_build_temp/petsc-default-mpich-gcc-opt/petsc-3.7.6/src/snes/interface/snes.c
+application called MPI_Abort(MPI_COMM_WORLD, 1) - process 0
+[unset]: write_line error; fd=-1 buf=:cmd=abort exitcode=1
+:
+system msg for write_line failure : Bad file descriptor
+
+ -----------------------------------------------------------------------------------------------------------------------------------------
+| Time:           Mon Apr  1 12:27:12 2019                                                                                                |
+| OS:             Linux                                                                                                                   |
+| HostName:       moose                                                                                                                   |
+| OS Release:     4.4.0-21-generic                                                                                                        |
+| OS Version:     #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016                                                                             |
+| Machine:        x86_64                                                                                                                  |
+| Username:       moose                                                                                                                   |
+| Configuration:  /home/moose/projects/moose/scripts/../libmesh/configure  'INSTALL=/home/moose/projects/moose/scripts/../libmesh/build-aux/install-sh -C'|
+|  '--with-methods=opt oprof dbg'                                                                                                         |
+|  '--prefix=/home/moose/projects/moose/scripts/../libmesh/installed'                                                                     |
+|  '--enable-silent-rules'                                                                                                                |
+|  '--enable-unique-id'                                                                                                                   |
+|  '--disable-warnings'                                                                                                                   |
+|  '--with-thread-model=openmp'                                                                                                           |
+|  '--disable-maintainer-mode'                                                                                                            |
+|  '--enable-petsc-hypre-required'                                                                                                        |
+|  '--enable-metaphysicl-required'                                                                                                        |
+|  'CXX=mpicxx'                                                                                                                           |
+|  'CC=mpicc'                                                                                                                             |
+|  'FC=mpif90'                                                                                                                            |
+|  'F77=mpif77'                                                                                                                           |
+|  'METHODS=opt oprof dbg'                                                                                                                |
+|  'PETSC_DIR=/opt/moose/petsc-3.7.6/mpich-3.2_gcc-7.2.0-opt'                                                                             |
+ -----------------------------------------------------------------------------------------------------------------------------------------
+ ------------------------------------------------------------------------------------------------------------
+| Phoenix Performance: Alive time=2.1429, Active time=7.1e-05                                                |
+ ------------------------------------------------------------------------------------------------------------
+| Event                         nCalls     Total Time  Avg Time    Total Time  Avg Time    % of Active Time  |
+|                                          w/o Sub     w/o Sub     With Sub    With Sub    w/o S    With S   |
+|------------------------------------------------------------------------------------------------------------|
+|                                                                                                            |
+|                                                                                                            |
+| Setup                                                                                                      |
+|   maxVarNDofsPerElem()        1          0.0001      0.000056    0.0001      0.000056    78.87    78.87    |
+|   maxVarNDofsPerNode()        1          0.0000      0.000015    0.0000      0.000015    21.13    21.13    |
+ ------------------------------------------------------------------------------------------------------------
+| Totals:                       2          0.0001                                          100.00            |
+ ------------------------------------------------------------------------------------------------------------
+Finished: Exit code: 1

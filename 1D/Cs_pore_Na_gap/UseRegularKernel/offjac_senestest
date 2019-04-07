@@ -1,0 +1,20 @@
+  solve_type = NEWTON
+  petsc_options_iname = '-snes_type'
+  petsc_options_value = 'test'
+
+Testing hand-coded Jacobian, if the ratio is
+O(1.e-8), the hand-coded Jacobian is probably correct.
+Run with -snes_test_display to show difference
+of hand-coded and finite difference Jacobian.
+
+
+without onJac or Offjac:
+
+Norm of matrix ratio 0.752571, difference 544688. (user-defined state)
+Norm of matrix ratio 3.74055e-10, difference 0.000270729 (constant state -1.0)
+Norm of matrix ratio 0.752514, difference 544647. (constant state 1.0
+
+with onJac (with or without Offjac, same):
+Norm of matrix ratio 0.752571, difference 544688. (user-defined state)
+Norm of matrix ratio 3.74055e-10, difference 0.000270729 (constant state -1.0)
+Norm of matrix ratio 0.470404, difference 385818. (constant state 1.0)

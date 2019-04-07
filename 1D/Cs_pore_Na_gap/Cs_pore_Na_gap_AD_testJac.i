@@ -90,7 +90,9 @@
     family = LAGRANGE
     block = 'pore gap_r'
   []
-  [bounds_dummy]
+  [bounds_dummy_L_precipitate]
+  []
+  [bounds_dummy_S_precipitate]
   []
 []
 
@@ -149,7 +151,7 @@
   [Insolid_fuel_solute_precipitate]
     # Artifical parameters
     # Materials properties
-    type = Precipitation
+    type = ADPrecipitation
     unit_scalor = '3.7425e+10'
     variable = S_dissolve
     block = 'fuel_l'
@@ -166,7 +168,7 @@
   [Insolid_fuel_precipitatate_redissolve]
     # Artifical parameters
     # Materials properties
-    type = Precipitation
+    type = ADPrecipitation
     unit_scalor = '3.7425e+10'
     variable = S_precipitate
     block = 'fuel_l'
@@ -198,7 +200,7 @@
   [Inliquid_solute_precipitate]
     # Artifical parameters
     # Materials properties
-    type = Precipitation_liquid
+    type = ADPrecipitation_liquid
     unit_scalor = '3.7425e+10'
     variable = L_dissolve
     block = 'pore gap_r'
@@ -214,7 +216,7 @@
   [Inliquid_precipitate_redissolve]
     # Artifical parameters
     # Materials properties
-    type = Precipitation_liquid
+    type = ADPrecipitation_liquid
     unit_scalor = '3.7425e+10'
     variable = L_precipitate
     block = 'pore gap_r'
@@ -377,6 +379,7 @@
     block = 'fuel_l pore'
   []
   [scale_factor_Ln_precipitation]
+    # scale_solid is R*C_sink, scale_liquid is k_lp
     type = GenericConstantMaterial
     prop_names = 'scale_solid scale_liquid'
     prop_values = '1e1 1e1'
@@ -522,7 +525,7 @@
     type = LineValueSampler
     variable = 'S_precipitate'
     start_point = '0 0 0'
-    end_point = '60 0 0'
+    end_point = '20 0 0'
     num_points = 600
     sort_by = x
     outputs = 'CenterlineFinalValue'
@@ -576,18 +579,20 @@
 []
 
 [Executioner]
-  # end_time = 2.48832e+7       ### 5% burnup for a fast test
+  # end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
   type = Transient
-  solve_type = PJFNK
-  petsc_options_iname = '-pc_type -pc_hypre_type -snes_type'
-  petsc_options_value = 'hypre boomeramg vinewtonrsls'
+  end_time = 2.48832e+7 # ## 5% burnup for a fast test
+
+  solve_type = NEWTON
+  petsc_options_iname = '-snes_type'
+  petsc_options_value = 'test'
+
   dt = 100
   num_steps = 50000
-  end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
   [TimeStepper]
     type = IterationAdaptiveDT
     dt = 100
-    cutback_factor = 0.5
+    cutback_factor = 0.1
     growth_factor = 2
     optimal_iterations = 6
     iteration_window = 2
@@ -618,7 +623,15 @@
     type = BoundsAux
     lower = 0
     bounded_variable = 'L_precipitate'
-    variable = bounds_dummy
+    variable = bounds_dummy_L_precipitate
     block = 'pore gap_r'
+  []
+  [S_precipitate_bounds]
+    # set this bound not below 0
+    type = BoundsAux
+    lower = 0
+    bounded_variable = 'S_precipitate'
+    variable = bounds_dummy_S_precipitate
+    block = 'fuel_l'
   []
 []

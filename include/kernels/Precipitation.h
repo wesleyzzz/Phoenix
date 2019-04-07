@@ -16,6 +16,7 @@ public:
 protected:
   virtual Real computeQpResidual() override;
   virtual Real computeQpJacobian() override;
+  virtual Real computeQpOffDiagJacobian(unsigned int jvar) override;
 
   const Real PI;
   const MaterialProperty<Real> & _scale_factor;
@@ -25,6 +26,6 @@ protected:
   const VariableValue & _coupled_variable;
   const MaterialProperty<Real> & _diffusivity;
   const MaterialProperty<Real> & _solubility;
-  const Real & _Ave_l_p;
+  unsigned int _coupled_variable_offJac;
 };
 #endif //PRECIPITATION_H
