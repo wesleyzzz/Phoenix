@@ -1,3 +1,5 @@
+// Describe s_d --> l_p
+
 #include "InterfaceForce_lp.h"
 #include <cmath>
 
@@ -31,8 +33,7 @@ InterfaceForce_lp::InterfaceForce_lp(const InputParameters & parameters) :
     _solubility_in_solid(getMaterialProperty<Real>(getParam<MaterialPropertyName>("solubility_in_solid"))),
     _diffusivity_in_solid_sd(getMaterialProperty<Real>(getParam<MaterialPropertyName>("diffusivity_in_solid_sd"))),
     _diffusivity_in_solid_lp(getMaterialProperty<Real>(getParam<MaterialPropertyName>("diffusivity_in_solid_lp")))
-    // _Ave_s_d(getPostprocessorValue("Ave_s_d")),
-    // _Ave_l_p(getPostprocessorValue("Ave_l_p"))
+
 {
   if (!parameters.isParamValid("boundary"))
   {
@@ -59,8 +60,6 @@ Real
 InterfaceForce_lp::computeQpResidual(Moose::DGResidualType type)
 {
   Real r = 0.0;
-  // effective diffusivity for the s_d to l_p
-
   Real Diff_eff = _diffusivity_in_solid_sd[_qp];
   Real Force_eff = _driving_rate[_qp] * (_neighbor_value[_qp] - _solubility_in_solid[_qp]);
 

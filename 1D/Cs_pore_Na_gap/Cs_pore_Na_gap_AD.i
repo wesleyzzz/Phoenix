@@ -6,9 +6,9 @@
   [mesh_split]
     type = CartesianMeshGenerator
     dim = 1
-    dx = '18 1 1 1 1 16 1 1 1 1 16 1.6 0.4'
-    ix = '18 5 20 10 5 16 5 10 10 5 16 8 10'
-    subdomain_id = '0 0 0 1 1 1 1 1 2 2 2 2 2'
+    dx = '18 1 1 1 1 18 18 1.6 0.4'
+    ix = '18 5 20 10 5 18 18 8 10'
+    subdomain_id = '0 0 0 1 1 1 2 2 2'
   []
 []
 

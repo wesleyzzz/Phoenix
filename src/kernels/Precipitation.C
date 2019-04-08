@@ -1,4 +1,4 @@
-// This kernel include precipitation and redissolution
+// This kernel include precipitation and redissolution, doesnot include     unit_scalor
 
 #include "Precipitation.h"
 #include <cmath>

@@ -1,3 +1,5 @@
+// Describe s_p --> l_d
+
 #include "InterfaceForce_sp.h"
 #include <cmath>
 
@@ -56,8 +58,6 @@ Real
 InterfaceForce_sp::computeQpResidual(Moose::DGResidualType type)
 {
   Real r = 0.0;
-  // effective diffusivity for the s_d to l_p
-
   Real Diff_eff = _diffusivity_in_solid_sd[_qp];
   Real Force_eff = _driving_rate[_qp] * (_solubility_in_liquid[_qp] - _u[_qp]);
 
@@ -84,7 +84,6 @@ Real
 InterfaceForce_sp::computeQpJacobian(Moose::DGJacobianType type)
 {
   Real jac = 0.0;
-  // effective diffusivity for the s_d to l_p
   Real Diff_eff = _diffusivity_in_solid_sd[_qp];
   Real prefactor = Diff_eff * _driving_rate[_qp] * (1.0 - _coupled_l_p[_qp] / _unit_scalor);
 
