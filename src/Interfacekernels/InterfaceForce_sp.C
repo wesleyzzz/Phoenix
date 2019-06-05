@@ -61,7 +61,7 @@ InterfaceForce_sp::computeQpResidual(Moose::DGResidualType type)
   Real Diff_eff = _diffusivity_in_solid_sd[_qp];
   Real Force_eff = _driving_rate[_qp] * (_solubility_in_liquid[_qp] - _u[_qp]);
 
-  if (_neighbor_value[_qp] < _stop_threshold)
+  if (_neighbor_value[_qp] < _stop_threshold && _coupled_l_p[_qp] < _stop_threshold)
   {
     r = Diff_eff * Force_eff * _neighbor_value[_qp] / _unit_scalor * (1.0 - _coupled_l_p[_qp] / _unit_scalor);    // The precipitation in the pore serves as a Ln pump
   }

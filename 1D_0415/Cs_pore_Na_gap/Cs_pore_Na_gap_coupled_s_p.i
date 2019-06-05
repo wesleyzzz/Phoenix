@@ -267,7 +267,7 @@
   [interface_ld_reaction_l]
     # Materials properties
     # Artifical parameters
-    type = InterfaceForce_ld
+    type = InterfaceForce_sd_2_ld
     variable = L_dissolve
     neighbor_var = 'S_dissolve'
     boundary = 'master_pore_l_interface'
@@ -283,7 +283,7 @@
   [interface_pureLn_reaction_l]
     # Materials properties
     # Artifical parameters
-    type = InterfaceForce_lp
+    type = InterfaceForce_sd_2_lp
     variable = L_precipitate
     neighbor_var = 'S_dissolve'
     boundary = 'master_pore_l_interface'
@@ -580,7 +580,7 @@
 []
 
 [Executioner]
-  # end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
+  #end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
   type = Transient
   end_time = 2.48832e+7 # ## 5% burnup for a fast test
   solve_type = PJFNK

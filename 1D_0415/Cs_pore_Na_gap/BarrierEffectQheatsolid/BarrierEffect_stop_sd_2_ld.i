@@ -267,7 +267,7 @@
   [interface_ld_reaction_l]
     # Materials properties
     # Artifical parameters
-    type = InterfaceForce_ld
+    type = InterfaceForce_sd_2_ld
     variable = L_dissolve
     neighbor_var = 'S_dissolve'
     boundary = 'master_pore_l_interface'
@@ -279,11 +279,12 @@
     solubility_in_solid = solubility_solid
     driving_rate = k_sd_ld
     unit_scalor = 3.7425e+10
+    stop_threshold = 3.7425e+10
   []
   [interface_pureLn_reaction_l]
     # Materials properties
     # Artifical parameters
-    type = InterfaceForce_lp
+    type = InterfaceForce_sd_2_lp
     variable = L_precipitate
     neighbor_var = 'S_dissolve'
     boundary = 'master_pore_l_interface'
@@ -324,7 +325,7 @@
   [Diffusivity_Solid_fuel_SoretHeat]
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
-    prop_values = '1.0'
+    prop_values = '1e4'
     block = 'fuel_l'
   []
   [Diffusivity_Solid_fuel]
@@ -580,7 +581,7 @@
 []
 
 [Executioner]
-  # end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
+  #end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
   type = Transient
   end_time = 2.48832e+7 # ## 5% burnup for a fast test
   solve_type = PJFNK

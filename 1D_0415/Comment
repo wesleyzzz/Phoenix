@@ -1,0 +1,14 @@
+About this version:
+
+Interface kernels updated: 
+Correctly coupled the associated neighbor variable.
+
+(1) InterfaceForce_sd_2_ld, InterfaceForce_sd_2_lp, use the following:
+
+    _coupled_s_p(coupledNeighborValue("coupled_s_p")),
+
+
+(2) InterfaceForce_sp can be used for s_p --> l_d because it has already coupled s p to neighborvalue in input file:
+
+    neighbor_var = S_precipitate
+

@@ -6,9 +6,9 @@
   [mesh_split]
     type = CartesianMeshGenerator
     dim = 1
-    dx = '18 1 1 1 1 17 1 18 1.6 0.4'
-    ix = '18 5 20 10 5 17 2 18 8 10'
-    subdomain_id = '0 0 0 1 1 1 1 2 2 2'
+    dx = '18 1 1 1 1 17 1 19.8 0.2'
+    ix = '18 5 20 10 5 17 2 20 10'
+    subdomain_id = '0 0 0 1 1 1 1 2 2'
   []
 []
 
@@ -325,7 +325,7 @@
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
     prop_values = '1.0'
-    block = 'fuel_l'
+    block = 'fuel_l pore'
   []
   [Diffusivity_Solid_fuel]
     # Arrhenius equation
@@ -370,7 +370,7 @@
   [Diffusivity_Liquid_Soret]
     type = GenericConstantMaterial
     prop_names = 'Qheat_liquid'
-    prop_values = '1.0'
+    prop_values = '1e2'
     block = 'pore gap_r'
   []
   [Interface_Ln_Driving_force_constant]
@@ -543,7 +543,7 @@
   [L_precipitate_distribution]
     type = LineValueSampler
     variable = 'L_precipitate'
-    start_point = '50 0 0'
+    start_point = '59.8 0 0'
     end_point = '60 0 0'
     num_points = 600
     sort_by = x

@@ -6,9 +6,9 @@
   [mesh_split]
     type = CartesianMeshGenerator
     dim = 1
-    dx = '18 1 1 1 1 17 1 18 1.6 0.4'
-    ix = '18 5 20 10 5 17 2 18 8 10'
-    subdomain_id = '0 0 0 1 1 1 1 2 2 2'
+    dx = '5 13 1 1 1 1 17 1 18 1.6 0.4'
+    ix = '10 13 5 20 10 5 17 2 18 8 10'
+    subdomain_id = '0 0 0 0 1 1 1 1 2 2 2'
   []
 []
 
@@ -325,7 +325,7 @@
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
     prop_values = '1.0'
-    block = 'fuel_l'
+    block = 'fuel_l pore'
   []
   [Diffusivity_Solid_fuel]
     # Arrhenius equation
@@ -588,6 +588,7 @@
   petsc_options_value = 'hypre boomeramg vinewtonrsls'
   dt = 100
   num_steps = 50000
+  dtmax = 1e4
   [TimeStepper]
     type = IterationAdaptiveDT
     dt = 100

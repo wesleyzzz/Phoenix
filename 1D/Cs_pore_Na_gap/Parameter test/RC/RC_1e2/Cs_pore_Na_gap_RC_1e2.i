@@ -6,9 +6,9 @@
   [mesh_split]
     type = CartesianMeshGenerator
     dim = 1
-    dx = '18 1 1 1 1 17 1 18 1.6 0.4'
-    ix = '18 5 20 10 5 17 2 18 8 10'
-    subdomain_id = '0 0 0 1 1 1 1 2 2 2'
+    dx = '18 1 1 1 1 18 18 2'
+    ix = '18 5 20 10 5 18 18 10'
+    subdomain_id = '0 0 0 1 1 1 2 2'
   []
 []
 
@@ -325,7 +325,7 @@
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
     prop_values = '1.0'
-    block = 'fuel_l'
+    block = 'fuel_l pore'
   []
   [Diffusivity_Solid_fuel]
     # Arrhenius equation
@@ -383,7 +383,7 @@
     # scale_solid is R*C_sink, scale_liquid is k_lp
     type = GenericConstantMaterial
     prop_names = 'scale_solid scale_liquid'
-    prop_values = '1e1 1e1'
+    prop_values = '1e2 1e1'
     block = 'fuel_l pore gap_r'
   []
   [Solubility_Solid]

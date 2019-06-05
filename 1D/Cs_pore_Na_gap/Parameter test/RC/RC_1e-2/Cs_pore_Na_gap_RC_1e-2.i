@@ -6,9 +6,9 @@
   [mesh_split]
     type = CartesianMeshGenerator
     dim = 1
-    dx = '18 1 1 1 1 17 1 18 1.6 0.4'
-    ix = '18 5 20 10 5 17 2 18 8 10'
-    subdomain_id = '0 0 0 1 1 1 1 2 2 2'
+    dx = '18 1 1 1 1 18 18 2'
+    ix = '18 5 20 10 5 18 18 10'
+    subdomain_id = '0 0 0 1 1 1 2 2'
   []
 []
 
@@ -122,8 +122,8 @@
   [Insolid_fuel_Ln_Generation_l]
     # For now assume a constant Ln generation rate only in the fuel block
     # function = Ln_Generation_Rate
-    # value = 7.9399 # Xiang atom per second
     type = BodyForce
+    # value = 7.9399 # Xiang atom per second
     value = 8.5084 # my atom per second
     variable = S_dissolve
     block = 'fuel_l'
@@ -154,12 +154,12 @@
     # Materials properties
     type = ADPrecipitation
     unit_scalor = '3.7425e+10'
-    variable = 'S_dissolve'
+    variable = S_dissolve
     block = 'fuel_l'
     precipitate_variable = 'S_precipitate'
-    scale_factor = 'scale_solid'
-    diffusivity = 'diffusivity_solid_sd'
-    solubility = 'solubility_solid'
+    scale_factor = scale_solid
+    diffusivity = diffusivity_solid_sd
+    solubility = solubility_solid
   []
   [Insolid_fuel_precipitation_dot]
     type = TimeDerivative
@@ -171,12 +171,12 @@
     # Materials properties
     type = ADPrecipitation
     unit_scalor = '3.7425e+10'
-    variable = 'S_precipitate'
+    variable = S_precipitate
     block = 'fuel_l'
     dissolve_variable = 'S_dissolve'
-    scale_factor = 'scale_solid'
-    diffusivity = 'diffusivity_solid_sd'
-    solubility = 'solubility_solid'
+    scale_factor = scale_solid
+    diffusivity = diffusivity_solid_sd
+    solubility = solubility_solid
   []
   [Inliquid_solute_dot]
     type = TimeDerivative
@@ -203,11 +203,11 @@
     # Materials properties
     type = ADPrecipitation_liquid
     unit_scalor = '3.7425e+10'
-    variable = 'L_dissolve'
+    variable = L_dissolve
     block = 'pore gap_r'
     precipitate_variable = 'L_precipitate'
-    scale_factor = 'scale_liquid'
-    solubility = 'solubility_liquid'
+    scale_factor = scale_liquid
+    solubility = solubility_liquid
   []
   [Inliquid_precipitation_dot]
     type = TimeDerivative
@@ -219,11 +219,11 @@
     # Materials properties
     type = ADPrecipitation_liquid
     unit_scalor = '3.7425e+10'
-    variable = 'L_precipitate'
+    variable = L_precipitate
     block = 'pore gap_r'
     dissolve_variable = 'L_dissolve'
-    scale_factor = 'scale_liquid'
-    solubility = 'solubility_liquid'
+    scale_factor = scale_liquid
+    solubility = solubility_liquid
   []
 []
 
@@ -325,7 +325,7 @@
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
     prop_values = '1.0'
-    block = 'fuel_l'
+    block = 'fuel_l pore'
   []
   [Diffusivity_Solid_fuel]
     # Arrhenius equation
@@ -383,7 +383,7 @@
     # scale_solid is R*C_sink, scale_liquid is k_lp
     type = GenericConstantMaterial
     prop_names = 'scale_solid scale_liquid'
-    prop_values = '1e1 1e1'
+    prop_values = '1e-2 1e1'
     block = 'fuel_l pore gap_r'
   []
   [Solubility_Solid]

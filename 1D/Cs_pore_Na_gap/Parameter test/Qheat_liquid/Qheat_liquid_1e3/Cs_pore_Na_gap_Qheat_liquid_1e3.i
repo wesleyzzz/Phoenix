@@ -6,9 +6,9 @@
   [mesh_split]
     type = CartesianMeshGenerator
     dim = 1
-    dx = '18 1 1 1 1 18 18 1.6 0.4'
-    ix = '18 5 20 10 5 18 18 8 10'
-    subdomain_id = '0 0 0 1 1 1 2 2 2'
+    dx = '18 1 1 1 1 17 1 19.8 0.2'
+    ix = '18 5 20 10 5 17 2 20 10'
+    subdomain_id = '0 0 0 1 1 1 1 2 2'
   []
 []
 
@@ -370,7 +370,7 @@
   [Diffusivity_Liquid_Soret]
     type = GenericConstantMaterial
     prop_names = 'Qheat_liquid'
-    prop_values = '1.0'
+    prop_values = '1e3'
     block = 'pore gap_r'
   []
   [Interface_Ln_Driving_force_constant]
@@ -383,7 +383,7 @@
     # scale_solid is R*C_sink, scale_liquid is k_lp
     type = GenericConstantMaterial
     prop_names = 'scale_solid scale_liquid'
-    prop_values = '1e-4 1e1'
+    prop_values = '1e1 1e1'
     block = 'fuel_l pore gap_r'
   []
   [Solubility_Solid]

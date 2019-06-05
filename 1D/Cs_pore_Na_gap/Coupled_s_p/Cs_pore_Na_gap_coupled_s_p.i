@@ -267,7 +267,7 @@
   [interface_ld_reaction_l]
     # Materials properties
     # Artifical parameters
-    type = InterfaceForce_ld
+    type = InterfaceForce_sd_2_ld
     variable = L_dissolve
     neighbor_var = 'S_dissolve'
     boundary = 'master_pore_l_interface'
@@ -283,16 +283,16 @@
   [interface_pureLn_reaction_l]
     # Materials properties
     # Artifical parameters
-    type = InterfaceForce_lp
-    variable = L_precipitate
+    type = InterfaceForce_sd_2_lp
     neighbor_var = 'S_dissolve'
+    diffusivity_in_solid_sd = diffusivity_solid_sd
+    unit_scalor = 3.7425e+10
     boundary = 'master_pore_l_interface'
     coupled_s_p = 'S_precipitate'
-    diffusivity_in_solid_sd = diffusivity_solid_sd
+    variable = L_precipitate
+    stop_threshold = 3.7425e+10
     solubility_in_solid = solubility_solid
     driving_rate = k_sd_lp
-    unit_scalor = 3.7425e+10
-    stop_threshold = 3.7425e+10
   []
   [interface_sp_reaction_l]
     # Artifical parameters
@@ -324,7 +324,7 @@
   [Diffusivity_Solid_fuel_SoretHeat]
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
-    prop_values = '1.0'
+    prop_values = '1e3'
     block = 'fuel_l'
   []
   [Diffusivity_Solid_fuel]
