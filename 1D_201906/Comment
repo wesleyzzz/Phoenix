@@ -1,0 +1,10 @@
+About this version:
+
+Interface kernels updated: 
+neglect metal reaction, just solute transportation between domains, consider the flux
+
+(1) Use InterfaceForce_sd_2_ld_flux instead of InterfaceForce_sd_2_ld,
+
+
+(2) Remove InterfaceForce_sd_2_lp and InterfaceForce_sp 
+
