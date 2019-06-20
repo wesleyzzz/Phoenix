@@ -6,9 +6,9 @@
   [mesh_split]
     type = CartesianMeshGenerator
     dim = 1
-    dx = '12 4 4 2 17 1 14 2 4'
-    ix = '12 8 16 8 17 2 14 4 32'
-    subdomain_id = '0 0 0 1 1 1 2 2 2'
+    dx = '12 8 1 18 1 12 8'
+    ix = '12 40 3 18 3 12 40'
+    subdomain_id = '0 0 1 1 1 2 2'
   []
 []
 
@@ -354,7 +354,7 @@
   [Interface_Ln_Driving_force_constant]
     type = GenericConstantMaterial
     prop_names = 'k_sd_ld'
-    prop_values = '1e-5'
+    prop_values = '2e-6'
     block = 'fuel_l pore'
   []
   [scale_factor_Ln_precipitation]
