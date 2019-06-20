@@ -3,5 +3,6 @@
    1e-6, C_s_d fluctuate at the inteface resulting in negative value
    2e-6, 3e-6,negative value in C_s_d near the interface
 
-
 1e-2 will get a negative solution in C_l_d
+
+above solved by setting bounds
