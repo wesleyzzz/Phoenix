@@ -7,7 +7,7 @@
     type = CartesianMeshGenerator
     dim = 1
     dx = '12 8 1 18 1 12 8'
-    ix = '12 40 3 18 3 12 40'
+    ix = '12 80 3 18 3 12 40'
     subdomain_id = '0 0 1 1 1 2 2'
   []
 []
@@ -302,7 +302,7 @@
   [Diffusivity_Solid_fuel_SoretHeat]
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
-    prop_values = '1e-1'
+    prop_values = '1e2'
     block = 'fuel_l'
   []
   [Diffusivity_Solid_fuel]
@@ -348,7 +348,7 @@
   [Diffusivity_Liquid_Soret]
     type = GenericConstantMaterial
     prop_names = 'Qheat_liquid'
-    prop_values = '1e1'
+    prop_values = '1e-1'
     block = 'pore gap_r'
   []
   [Interface_Ln_Driving_force_constant]
@@ -495,7 +495,7 @@
     type = LineValueSampler
     variable = 'S_dissolve'
     start_point = '0 0 0'
-    end_point = '60 0 0'
+    end_point = '20 0 0'
     num_points = 100
     sort_by = x
     outputs = 'CenterlineFinalValue'

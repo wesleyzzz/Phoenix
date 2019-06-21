@@ -6,9 +6,9 @@
   [mesh_split]
     type = CartesianMeshGenerator
     dim = 1
-    dx = '5 7 8 1 18 1 12 8'
-    ix = '25 7 80 3 18 3 12 40'
-    subdomain_id = '0 0 0 1 1 1 2 2'
+    dx = '3 2 7 8 1 18 1 12 8'
+    ix = '30 10 7 80 3 18 3 12 40'
+    subdomain_id = '0 0 0 0 1 1 1 2 2'
   []
 []
 
@@ -152,7 +152,7 @@
   [Insolid_fuel_solute_precipitate]
     # Artifical parameters
     # Materials properties
-    type = ADPrecipitation
+    type = ADPrecipitationNoRedissovle
     unit_scalor = '3.7425e+10'
     variable = 'S_dissolve'
     block = 'fuel_l'
@@ -169,7 +169,7 @@
   [Insolid_fuel_precipitatate_redissolve]
     # Artifical parameters
     # Materials properties
-    type = ADPrecipitation
+    type = ADPrecipitationNoRedissovle
     unit_scalor = '3.7425e+10'
     variable = 'S_precipitate'
     block = 'fuel_l'
@@ -302,7 +302,7 @@
   [Diffusivity_Solid_fuel_SoretHeat]
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
-    prop_values = '1e1'
+    prop_values = '1e2'
     block = 'fuel_l'
   []
   [Diffusivity_Solid_fuel]

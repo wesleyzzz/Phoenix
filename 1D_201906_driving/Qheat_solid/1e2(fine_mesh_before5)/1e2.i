@@ -6,9 +6,9 @@
   [mesh_split]
     type = CartesianMeshGenerator
     dim = 1
-    dx = '3 9 8 1 18 1 12 8'
-    ix = '6 9 40 3 18 3 12 40'
-    subdomain_id = '0 0 0 1 1 1 2 2'
+    dx = '3 2 7 8 1 18 1 12 8'
+    ix = '30 10 7 80 3 18 3 12 40'
+    subdomain_id = '0 0 0 0 1 1 1 2 2'
   []
 []
 
@@ -495,7 +495,7 @@
     type = LineValueSampler
     variable = 'S_dissolve'
     start_point = '0 0 0'
-    end_point = '60 0 0'
+    end_point = '20 0 0'
     num_points = 100
     sort_by = x
     outputs = 'CenterlineFinalValue'

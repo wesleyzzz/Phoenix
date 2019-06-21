@@ -6,9 +6,9 @@
   [mesh_split]
     type = CartesianMeshGenerator
     dim = 1
-    dx = '5 7 8 1 18 1 12 8'
-    ix = '25 7 80 3 18 3 12 40'
-    subdomain_id = '0 0 0 1 1 1 2 2'
+    dx = '12 8 1 18 1 12 8'
+    ix = '12 40 3 18 3 12 40'
+    subdomain_id = '0 0 1 1 1 2 2'
   []
 []
 
@@ -93,6 +93,10 @@
   [bounds_dummy_L_precipitate]
   []
   [bounds_dummy_S_precipitate]
+  []
+  [bounds_dummy_L_dissolve]
+  []
+  [bounds_dummy_S_dissolve]
   []
 []
 
@@ -302,7 +306,7 @@
   [Diffusivity_Solid_fuel_SoretHeat]
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
-    prop_values = '1e1'
+    prop_values = '1e-1'
     block = 'fuel_l'
   []
   [Diffusivity_Solid_fuel]
@@ -348,7 +352,7 @@
   [Diffusivity_Liquid_Soret]
     type = GenericConstantMaterial
     prop_names = 'Qheat_liquid'
-    prop_values = '1e-1'
+    prop_values = '1e2'
     block = 'pore gap_r'
   []
   [Interface_Ln_Driving_force_constant]
@@ -495,7 +499,7 @@
     type = LineValueSampler
     variable = 'S_dissolve'
     start_point = '0 0 0'
-    end_point = '20 0 0'
+    end_point = '60 0 0'
     num_points = 100
     sort_by = x
     outputs = 'CenterlineFinalValue'
@@ -603,12 +607,28 @@
     variable = bounds_dummy_L_precipitate
     block = 'pore gap_r'
   []
+  [L_dissolve_bounds]
+    # set this bound not below 0
+    type = BoundsAux
+    lower = 0
+    bounded_variable = 'L_dissolve'
+    variable = bounds_dummy_L_dissolve
+    block = 'pore gap_r'
+  []
   [S_precipitate_bounds]
     # set this bound not below 0
     type = BoundsAux
     lower = 0
     bounded_variable = 'S_precipitate'
     variable = bounds_dummy_S_precipitate
+    block = 'fuel_l'
+  []
+  [S_dissolve_bounds]
+    # set this bound not below 0
+    type = BoundsAux
+    lower = 0
+    bounded_variable = 'S_dissolve'
+    variable = bounds_dummy_S_dissolve
     block = 'fuel_l'
   []
 []
