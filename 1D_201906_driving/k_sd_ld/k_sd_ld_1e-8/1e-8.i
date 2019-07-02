@@ -94,6 +94,10 @@
   []
   [bounds_dummy_S_precipitate]
   []
+  [bounds_dummy_L_dissolve]
+  []
+  [bounds_dummy_S_dissolve]
+  []
 []
 
 [Functions]
@@ -603,12 +607,28 @@
     variable = bounds_dummy_L_precipitate
     block = 'pore gap_r'
   []
+  [L_dissolve_bounds]
+    # set this bound not below 0
+    type = BoundsAux
+    lower = 0
+    bounded_variable = 'L_dissolve'
+    variable = bounds_dummy_L_dissolve
+    block = 'pore gap_r'
+  []
   [S_precipitate_bounds]
     # set this bound not below 0
     type = BoundsAux
     lower = 0
     bounded_variable = 'S_precipitate'
     variable = bounds_dummy_S_precipitate
+    block = 'fuel_l'
+  []
+  [S_dissolve_bounds]
+    # set this bound not below 0
+    type = BoundsAux
+    lower = 0
+    bounded_variable = 'S_dissolve'
+    variable = bounds_dummy_S_dissolve
     block = 'fuel_l'
   []
 []
