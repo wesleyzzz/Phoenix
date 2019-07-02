@@ -18,14 +18,14 @@ defineADValidParams(ADPrecipitation_liquid,
 template <ComputeStage compute_stage>
 ADPrecipitation_liquid<compute_stage>::ADPrecipitation_liquid(const InputParameters & parameters) :
   ADKernel<compute_stage>(parameters),
-  _scale_factor(adGetADMaterialProperty<Real>("scale_factor")),
+  _scale_factor(getADMaterialProperty<Real>("scale_factor")),
   _has_coupled_precipitate(isCoupled("precipitate_variable")),
   _has_coupled_dissolve(isCoupled("dissolve_variable")),
   _sign((_has_coupled_precipitate) ? -1 : 1),
   _coupled_variable((_has_coupled_precipitate) ? adCoupledValue("precipitate_variable") : adCoupledValue("dissolve_variable")),
-  _diffusivity(adGetADMaterialProperty<Real>("diffusivity")),
-  _solubility(adGetADMaterialProperty<Real>("solubility")),
-  _unit_scalor(adGetParam<Real>("unit_scalor"))
+  _diffusivity(getADMaterialProperty<Real>("diffusivity")),
+  _solubility(getADMaterialProperty<Real>("solubility")),
+  _unit_scalor(getParam<Real>("unit_scalor"))
 {
 }
 
