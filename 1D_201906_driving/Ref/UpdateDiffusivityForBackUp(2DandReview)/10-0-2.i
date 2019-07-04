@@ -142,7 +142,7 @@
     type = MatDiffusion
     variable = S_dissolve
     block = 'fuel_l'
-    D_name = diffusivity_solid_sd
+    diffusivity = diffusivity_solid_sd
   []
   [Insolid_fuel_solute_Soret]
     # Materials Properties
@@ -191,7 +191,7 @@
     type = MatDiffusion
     variable = L_dissolve
     block = 'pore gap_r'
-    D_name = diffusivity_liquid
+    diffusivity = diffusivity_liquid
   []
   [Inliquid_solute_Soret]
     # Materials Properties
@@ -317,8 +317,8 @@
     f_name = diffusivity_solid_sd
     args = 'T'
     constant_names = 'D0_d Q_d k'
-    constant_expressions = '3.61e-8 1.171 8.61733e-5'
-    function = '1e8 * D0_d * exp (-Q_d/k/T)'
+    constant_expressions = '3.61e4 1.172 8.61733e-5'
+    function = '1e-4 * D0_d * exp (-Q_d/k/T)'
     block = 'fuel_l pore'
   []
   [Diffusivity_Liquid_pore]
@@ -358,7 +358,7 @@
   [Interface_Ln_Driving_force_constant]
     type = GenericConstantMaterial
     prop_names = 'k_sd_ld'
-    prop_values = '1e-7'
+    prop_values = '1e-4'
     block = 'fuel_l pore'
   []
   [scale_factor_Ln_precipitation]

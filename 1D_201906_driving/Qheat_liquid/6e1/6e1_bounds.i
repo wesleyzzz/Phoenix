@@ -352,13 +352,13 @@
   [Diffusivity_Liquid_Soret]
     type = GenericConstantMaterial
     prop_names = 'Qheat_liquid'
-    prop_values = '1e-1'
+    prop_values = '6e1'
     block = 'pore gap_r'
   []
   [Interface_Ln_Driving_force_constant]
     type = GenericConstantMaterial
     prop_names = 'k_sd_ld'
-    prop_values = '1e-7'
+    prop_values = '1e-4'
     block = 'fuel_l pore'
   []
   [scale_factor_Ln_precipitation]

@@ -94,10 +94,6 @@
   []
   [bounds_dummy_S_precipitate]
   []
-  [bounds_dummy_L_dissolve]
-  []
-  [bounds_dummy_S_dissolve]
-  []
 []
 
 [Functions]
@@ -352,13 +348,13 @@
   [Diffusivity_Liquid_Soret]
     type = GenericConstantMaterial
     prop_names = 'Qheat_liquid'
-    prop_values = '1e-1'
+    prop_values = '1e-3'
     block = 'pore gap_r'
   []
   [Interface_Ln_Driving_force_constant]
     type = GenericConstantMaterial
     prop_names = 'k_sd_ld'
-    prop_values = '1e-7'
+    prop_values = '1e-4'
     block = 'fuel_l pore'
   []
   [scale_factor_Ln_precipitation]
@@ -607,28 +603,12 @@
     variable = bounds_dummy_L_precipitate
     block = 'pore gap_r'
   []
-  [L_dissolve_bounds]
-    # set this bound not below 0
-    type = BoundsAux
-    lower = 0
-    bounded_variable = 'L_dissolve'
-    variable = bounds_dummy_L_dissolve
-    block = 'pore gap_r'
-  []
   [S_precipitate_bounds]
     # set this bound not below 0
     type = BoundsAux
     lower = 0
     bounded_variable = 'S_precipitate'
     variable = bounds_dummy_S_precipitate
-    block = 'fuel_l'
-  []
-  [S_dissolve_bounds]
-    # set this bound not below 0
-    type = BoundsAux
-    lower = 0
-    bounded_variable = 'S_dissolve'
-    variable = bounds_dummy_S_dissolve
     block = 'fuel_l'
   []
 []

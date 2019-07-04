@@ -142,7 +142,7 @@
     type = MatDiffusion
     variable = S_dissolve
     block = 'fuel_l'
-    D_name = diffusivity_solid_sd
+    diffusivity = diffusivity_solid_sd
   []
   [Insolid_fuel_solute_Soret]
     # Materials Properties
@@ -191,7 +191,7 @@
     type = MatDiffusion
     variable = L_dissolve
     block = 'pore gap_r'
-    D_name = diffusivity_liquid
+    diffusivity = diffusivity_liquid
   []
   [Inliquid_solute_Soret]
     # Materials Properties
@@ -358,7 +358,7 @@
   [Interface_Ln_Driving_force_constant]
     type = GenericConstantMaterial
     prop_names = 'k_sd_ld'
-    prop_values = '1e-7'
+    prop_values = '1e-4'
     block = 'fuel_l pore'
   []
   [scale_factor_Ln_precipitation]
@@ -499,8 +499,8 @@
     type = LineValueSampler
     variable = 'S_dissolve'
     start_point = '0 0 0'
-    end_point = '60 0 0'
-    num_points = 100
+    end_point = '20 0 0'
+    num_points = 600
     sort_by = x
     outputs = 'CenterlineFinalValue'
   []
@@ -564,7 +564,8 @@
 [Executioner]
   #end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
   type = Transient
-  end_time = 2.48832e+7 # ## 5% burnup for a fast test
+  #end_time = 2.48832e+7 # ## 5% burnup for a fast test
+  end_time = 1.728e+7 # ## 200 days, 3.47% burnup
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type -snes_type'
   petsc_options_value = 'hypre boomeramg vinewtonrsls'

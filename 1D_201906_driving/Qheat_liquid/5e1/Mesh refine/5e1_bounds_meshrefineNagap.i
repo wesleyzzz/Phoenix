@@ -7,7 +7,7 @@
     type = CartesianMeshGenerator
     dim = 1
     dx = '12 8 1 18 1 12 8'
-    ix = '12 40 3 18 3 12 40'
+    ix = '12 40 3 18 3 12 50'
     subdomain_id = '0 0 1 1 1 2 2'
   []
 []
@@ -352,13 +352,13 @@
   [Diffusivity_Liquid_Soret]
     type = GenericConstantMaterial
     prop_names = 'Qheat_liquid'
-    prop_values = '1e-1'
+    prop_values = '5e1'
     block = 'pore gap_r'
   []
   [Interface_Ln_Driving_force_constant]
     type = GenericConstantMaterial
     prop_names = 'k_sd_ld'
-    prop_values = '1e-7'
+    prop_values = '1e-4'
     block = 'fuel_l pore'
   []
   [scale_factor_Ln_precipitation]
