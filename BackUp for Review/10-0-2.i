@@ -241,7 +241,7 @@
     type = ParsedAux
     variable = Solid_solubility_Ln
     constant_names = 'fraction density_fuel'
-    constant_expressions = '0.003 4.6719e10'
+    constant_expressions = '0.003 4.7378e10'
     function = 'fraction * density_fuel'
     block = 'fuel_l'
   []
