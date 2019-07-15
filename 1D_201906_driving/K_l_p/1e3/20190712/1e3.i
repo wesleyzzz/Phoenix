@@ -142,7 +142,7 @@
     type = MatDiffusion
     variable = S_dissolve
     block = 'fuel_l'
-    D_name = diffusivity_solid_sd
+    diffusivity = diffusivity_solid_sd
   []
   [Insolid_fuel_solute_Soret]
     # Materials Properties
@@ -191,7 +191,7 @@
     type = MatDiffusion
     variable = L_dissolve
     block = 'pore gap_r'
-    D_name = diffusivity_liquid
+    diffusivity = diffusivity_liquid
   []
   [Inliquid_solute_Soret]
     # Materials Properties
@@ -365,7 +365,7 @@
     # scale_solid is R*C_sink, scale_liquid is k_lp
     type = GenericConstantMaterial
     prop_names = 'scale_solid scale_liquid'
-    prop_values = '1e2 1e2'
+    prop_values = '1e2 1e3'
     block = 'fuel_l pore gap_r'
   []
   [Solubility_Solid]
@@ -499,8 +499,8 @@
     type = LineValueSampler
     variable = 'S_dissolve'
     start_point = '0 0 0'
-    end_point = '60 0 0'
-    num_points = 100
+    end_point = '20 0 0'
+    num_points = 300
     sort_by = x
     outputs = 'CenterlineFinalValue'
   []
@@ -509,14 +509,14 @@
     variable = 'S_precipitate'
     start_point = '0 0 0'
     end_point = '20 0 0'
-    num_points = 600
+    num_points = 300
     sort_by = x
     outputs = 'CenterlineFinalValue'
   []
   [L_dissolve_distribution]
     type = LineValueSampler
     variable = 'L_dissolve'
-    start_point = '0 0 0'
+    start_point = '20 0 0'
     end_point = '60 0 0'
     num_points = 600
     sort_by = x
@@ -525,7 +525,7 @@
   [L_precipitate_distribution]
     type = LineValueSampler
     variable = 'L_precipitate'
-    start_point = '50 0 0'
+    start_point = '20 0 0'
     end_point = '60 0 0'
     num_points = 600
     sort_by = x

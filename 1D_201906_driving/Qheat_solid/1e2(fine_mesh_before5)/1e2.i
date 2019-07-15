@@ -564,8 +564,8 @@
 [Executioner]
   #end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
   type = Transient
-  #end_time = 2.48832e+7 # ## 5% burnup for a fast test
-  end_time = 1.728e+7 # ## 200 days, 3.47% burnup
+  end_time = 2.48832e+7 # ## 5% burnup for a fast test
+  #end_time = 1.728e+7 # ## 200 days, 3.47% burnup
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type -snes_type'
   petsc_options_value = 'hypre boomeramg vinewtonrsls'

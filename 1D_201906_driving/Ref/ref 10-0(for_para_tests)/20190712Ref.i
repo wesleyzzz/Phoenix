@@ -7,7 +7,7 @@
     type = CartesianMeshGenerator
     dim = 1
     dx = '12 8 1 18 1 12 8'
-    ix = '12 80 3 18 3 12 40'
+    ix = '12 40 3 18 3 12 40'
     subdomain_id = '0 0 1 1 1 2 2'
   []
 []
@@ -94,6 +94,10 @@
   []
   [bounds_dummy_S_precipitate]
   []
+  [bounds_dummy_L_dissolve]
+  []
+  [bounds_dummy_S_dissolve]
+  []
 []
 
 [Functions]
@@ -138,7 +142,7 @@
     type = MatDiffusion
     variable = S_dissolve
     block = 'fuel_l'
-    D_name = diffusivity_solid_sd
+    diffusivity = diffusivity_solid_sd
   []
   [Insolid_fuel_solute_Soret]
     # Materials Properties
@@ -187,7 +191,7 @@
     type = MatDiffusion
     variable = L_dissolve
     block = 'pore gap_r'
-    D_name = diffusivity_liquid
+    diffusivity = diffusivity_liquid
   []
   [Inliquid_solute_Soret]
     # Materials Properties
@@ -302,7 +306,7 @@
   [Diffusivity_Solid_fuel_SoretHeat]
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
-    prop_values = '1e2'
+    prop_values = '1e-1'
     block = 'fuel_l'
   []
   [Diffusivity_Solid_fuel]
@@ -496,7 +500,7 @@
     variable = 'S_dissolve'
     start_point = '0 0 0'
     end_point = '20 0 0'
-    num_points = 100
+    num_points = 300
     sort_by = x
     outputs = 'CenterlineFinalValue'
   []
@@ -505,14 +509,14 @@
     variable = 'S_precipitate'
     start_point = '0 0 0'
     end_point = '20 0 0'
-    num_points = 600
+    num_points = 300
     sort_by = x
     outputs = 'CenterlineFinalValue'
   []
   [L_dissolve_distribution]
     type = LineValueSampler
     variable = 'L_dissolve'
-    start_point = '0 0 0'
+    start_point = '20 0 0'
     end_point = '60 0 0'
     num_points = 600
     sort_by = x
@@ -521,7 +525,7 @@
   [L_precipitate_distribution]
     type = LineValueSampler
     variable = 'L_precipitate'
-    start_point = '50 0 0'
+    start_point = '20 0 0'
     end_point = '60 0 0'
     num_points = 600
     sort_by = x
@@ -603,12 +607,28 @@
     variable = bounds_dummy_L_precipitate
     block = 'pore gap_r'
   []
+  [L_dissolve_bounds]
+    # set this bound not below 0
+    type = BoundsAux
+    lower = 0
+    bounded_variable = 'L_dissolve'
+    variable = bounds_dummy_L_dissolve
+    block = 'pore gap_r'
+  []
   [S_precipitate_bounds]
     # set this bound not below 0
     type = BoundsAux
     lower = 0
     bounded_variable = 'S_precipitate'
     variable = bounds_dummy_S_precipitate
+    block = 'fuel_l'
+  []
+  [S_dissolve_bounds]
+    # set this bound not below 0
+    type = BoundsAux
+    lower = 0
+    bounded_variable = 'S_dissolve'
+    variable = bounds_dummy_S_dissolve
     block = 'fuel_l'
   []
 []

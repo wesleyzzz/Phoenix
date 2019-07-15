@@ -6,9 +6,9 @@
   [mesh_split]
     type = CartesianMeshGenerator
     dim = 1
-    dx = '12 8 1 18 1 5 7 8'
-    ix = '12 40 3 18 3 25 7 40'
-    subdomain_id = '0 0 1 1 1 2 2 2'
+    dx = '3 2 7 8 1 18 1 12 8'
+    ix = '30 10 7 80 3 18 3 12 40'
+    subdomain_id = '0 0 0 0 1 1 1 2 2'
   []
 []
 
@@ -306,7 +306,7 @@
   [Diffusivity_Solid_fuel_SoretHeat]
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
-    prop_values = '1e-1'
+    prop_values = '1e2'
     block = 'fuel_l'
   []
   [Diffusivity_Solid_fuel]
@@ -365,7 +365,7 @@
     # scale_solid is R*C_sink, scale_liquid is k_lp
     type = GenericConstantMaterial
     prop_names = 'scale_solid scale_liquid'
-    prop_values = '1e2 1e1'
+    prop_values = '1e2 1e2'
     block = 'fuel_l pore gap_r'
   []
   [Solubility_Solid]
@@ -500,7 +500,7 @@
     variable = 'S_dissolve'
     start_point = '0 0 0'
     end_point = '20 0 0'
-    num_points = 300
+    num_points = 600
     sort_by = x
     outputs = 'CenterlineFinalValue'
   []
@@ -509,14 +509,14 @@
     variable = 'S_precipitate'
     start_point = '0 0 0'
     end_point = '20 0 0'
-    num_points = 300
+    num_points = 600
     sort_by = x
     outputs = 'CenterlineFinalValue'
   []
   [L_dissolve_distribution]
     type = LineValueSampler
     variable = 'L_dissolve'
-    start_point = '20 0 0'
+    start_point = '0 0 0'
     end_point = '60 0 0'
     num_points = 600
     sort_by = x
@@ -525,7 +525,7 @@
   [L_precipitate_distribution]
     type = LineValueSampler
     variable = 'L_precipitate'
-    start_point = '20 0 0'
+    start_point = '50 0 0'
     end_point = '60 0 0'
     num_points = 600
     sort_by = x
@@ -564,7 +564,8 @@
 [Executioner]
   #end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
   type = Transient
-  end_time = 2.48832e+7 # ## 5% burnup for a fast test
+  #end_time = 2.48832e+7 # ## 5% burnup for a fast test
+  end_time = 1.728e+7 # ## 200 days, 3.47% burnup
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type -snes_type'
   petsc_options_value = 'hypre boomeramg vinewtonrsls'
