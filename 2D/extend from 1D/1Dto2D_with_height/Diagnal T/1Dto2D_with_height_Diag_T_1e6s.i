@@ -3,22 +3,22 @@
 []
 
 [MeshGenerators]
-  [semi]
+  [mesh_split]
     type = CartesianMeshGenerator
     dim = 2
-    dx = '20 20 20'
-    dy = '10 10'
-    ix = '20 20 20'
-    iy = '10 10'
-    subdomain_id = '0 1 2 0 3 2'
+    dx = '12 8 1 18 1 12 8'
+    ix = '12 24 3 18 3 12 24'
+    subdomain_id = '0 0 1 1 1 2 2'
+    iy = '10'
+    dy = '10'
   []
 []
 
 [MeshModifiers]
   [renameblock]
     type = RenameBlock
-    old_block_id = '0 1 2 3'
-    new_block_name = 'fuel_l pore gap_r fuel_t'
+    old_block_id = '0 1 2'
+    new_block_name = 'fuel_l pore gap_r'
   []
   [interface_from_s_l]
     type = SideSetsBetweenSubdomains
@@ -44,12 +44,6 @@
     paired_block = '1'
     new_boundary = 'master_gap_r_interface'
   []
-  [interface_from_g_r_fuel_t]
-    type = SideSetsBetweenSubdomains
-    master_block = '2'
-    paired_block = '3'
-    new_boundary = 'master_gap_r_interface_fuel_t'
-  []
   [surface_gap_right_end]
     type = SideSetsFromNormals
     normals = '1 0 0'
@@ -63,12 +57,12 @@
   [S_precipitate]
     order = FIRST
     family = LAGRANGE
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [S_dissolve]
     order = FIRST
     family = LAGRANGE
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [L_dissolve]
     order = FIRST
@@ -86,12 +80,12 @@
   [T]
     order = FIRST
     family = LAGRANGE
-    block = 'fuel_l fuel_t pore gap_r'
+    block = 'fuel_l pore gap_r'
   []
   [Solid_solubility_Ln]
     order = FIRST
     family = LAGRANGE
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [Liquid_solubility_Ln]
     order = FIRST
@@ -111,10 +105,11 @@
 [Functions]
   # Postprocessor Functions
   [Temp_Interpolation]
+    # 855 at top left corner
     type = ParsedFunction
-    value = 'origin_temp + gradient_x * abs(x - startpoint_x)'
-    vars = 'origin_temp startpoint_x gradient_x'
-    vals = '855 0.0 -0.05'
+    value = 'origin_temp + gradient_x * abs(x - startpoint_x) + gradient_y * abs(y - startpoint_y)'
+    vars = 'origin_temp startpoint_x gradient_x startpoint_y gradient_y'
+    vals = '855 0.0 -0.05 10.0 -0.05'
   []
   [Ln_Generation_Rate]
     type = ParsedFunction
@@ -138,25 +133,25 @@
     type = BodyForce
     value = 8.5084 # my atom per second
     variable = S_dissolve
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [InSolid_fuel_solute_dot]
     type = TimeDerivative
     variable = S_dissolve
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [Insolid_fuel_solute_diffusion]
     # Material properties
     type = MatDiffusion
     variable = S_dissolve
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
     diffusivity = diffusivity_solid_sd
   []
   [Insolid_fuel_solute_Soret]
     # Materials Properties
     type = SoretDiffusion
     variable = S_dissolve
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
     T = 'T' # The later is the temperature name in the auxkernel
     diff_name = diffusivity_solid_sd
     Q_name = Qheat_solid_sd # Provide the transport heat
@@ -167,7 +162,7 @@
     type = ADPrecipitation
     unit_scalor = '3.7425e+10'
     variable = 'S_dissolve'
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
     precipitate_variable = 'S_precipitate'
     scale_factor = 'scale_solid'
     diffusivity = 'diffusivity_solid_sd'
@@ -176,7 +171,7 @@
   [Insolid_fuel_precipitation_dot]
     type = TimeDerivative
     variable = S_precipitate
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [Insolid_fuel_precipitatate_redissolve]
     # Artifical parameters
@@ -184,7 +179,7 @@
     type = ADPrecipitation
     unit_scalor = '3.7425e+10'
     variable = 'S_precipitate'
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
     dissolve_variable = 'S_dissolve'
     scale_factor = 'scale_solid'
     diffusivity = 'diffusivity_solid_sd'
@@ -251,7 +246,7 @@
     constant_names = 'fraction density_fuel'
     constant_expressions = '0.003 4.6719e10'
     function = 'fraction * density_fuel'
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [Solubility_pore_relate_temperature]
     # # Use the relationship of Ce in liquid Cs
@@ -314,7 +309,7 @@
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
     prop_values = '1e-1'
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [Diffusivity_Solid_fuel]
     # Arrhenius equation
@@ -326,7 +321,7 @@
     constant_names = 'D0_d Q_d k'
     constant_expressions = '3.61e-8 1.171 8.61733e-5'
     function = '1e8 * D0_d * exp (-Q_d/k/T)'
-    block = 'fuel_l fuel_t pore'
+    block = 'fuel_l pore'
   []
   [Diffusivity_Liquid_pore]
     # Arrhenius equation
@@ -366,14 +361,14 @@
     type = GenericConstantMaterial
     prop_names = 'k_sd_ld'
     prop_values = '1e-4'
-    block = 'fuel_l fuel_t pore'
+    block = 'fuel_l pore'
   []
   [scale_factor_Ln_precipitation]
     # scale_solid is R*C_sink, scale_liquid is k_lp
     type = GenericConstantMaterial
     prop_names = 'scale_solid scale_liquid'
     prop_values = '1e2 1e2'
-    block = 'fuel_l fuel_t pore gap_r'
+    block = 'fuel_l pore gap_r'
   []
   [Solubility_Solid]
     # Arrhenius equation
@@ -383,7 +378,7 @@
     constant_names = 'fraction density_solid'
     constant_expressions = '0.003 4.6719e10'
     function = 'fraction * density_solid'
-    block = 'fuel_l fuel_t pore'
+    block = 'fuel_l pore'
     outputs = 'exodus'
   []
   [Solubility_Liquid_pore]
@@ -542,7 +537,7 @@
     type = LineValueSampler
     variable = 'Solid_solubility_Ln'
     start_point = '0 0 0'
-    end_point = '20 0 0'
+    end_point = '60 0 0'
     num_points = 600
     sort_by = x
     outputs = 'CenterlineFinalValue'
@@ -550,7 +545,7 @@
   [Ln_solubility_pore_distribution]
     type = LineValueSampler
     variable = 'Liquid_solubility_Ln'
-    start_point = '20 0 0'
+    start_point = '0 0 0'
     end_point = '60 0 0'
     num_points = 600
     sort_by = x
@@ -569,9 +564,8 @@
 []
 
 [Executioner]
-  # end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
   type = Transient
-  end_time = 2.48832e+7 # ## 5% burnup for a fast test
+  end_time = 1e+6
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type -snes_type'
   petsc_options_value = 'hypre boomeramg vinewtonrsls'
@@ -628,7 +622,7 @@
     lower = 0
     bounded_variable = 'S_precipitate'
     variable = bounds_dummy_S_precipitate
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [S_dissolve_bounds]
     # set this bound not below 0
@@ -636,6 +630,6 @@
     lower = 0
     bounded_variable = 'S_dissolve'
     variable = bounds_dummy_S_dissolve
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
 []

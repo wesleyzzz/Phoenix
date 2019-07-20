@@ -7,10 +7,10 @@
     type = CartesianMeshGenerator
     dim = 2
     dx = '12 8 1 18 1 12 8'
-    ix = '12 40 3 18 3 12 40'
+    ix = '12 24 3 18 3 12 24'
     subdomain_id = '0 0 1 1 1 2 2'
-    iy = '60'
-    dy = '60'
+    iy = '10'
+    dy = '10'
   []
 []
 
