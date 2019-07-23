@@ -15,7 +15,7 @@ public:
   ADPrecipitation_liquid(const InputParameters & parameters);
 
 protected:
-  virtual ADResidual computeQpResidual() override;
+  virtual ADReal computeQpResidual() override;
 
   const ADMaterialProperty(Real) & _scale_factor;
   const bool _has_coupled_precipitate;

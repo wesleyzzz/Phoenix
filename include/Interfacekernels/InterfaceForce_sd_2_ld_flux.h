@@ -1,8 +1,6 @@
 #pragma once
 
 #include "InterfaceKernel.h"
-#include "PostprocessorInterface.h"
-#include "VectorPostprocessorInterface.h"
 
 class InterfaceForce_sd_2_ld_flux;
 
@@ -10,15 +8,10 @@ template<>
 InputParameters validParams<InterfaceForce_sd_2_ld_flux>();
 
 class InterfaceForce_sd_2_ld_flux :
-  public InterfaceKernel,
-  public PostprocessorInterface,
-  protected VectorPostprocessorInterface
+  public InterfaceKernel
 {
 public:
   InterfaceForce_sd_2_ld_flux(const InputParameters & parameters);
-  virtual const PostprocessorValue & getPostprocessorValue(const std::string & name);
-  virtual const PostprocessorValue & getPostprocessorValueByName(const PostprocessorName & name);
-
 
 protected:
   virtual Real computeQpResidual(Moose::DGResidualType type);

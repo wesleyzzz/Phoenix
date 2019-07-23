@@ -21,8 +21,6 @@ InputParameters validParams<InterfaceForce_sd_2_ld_flux>()
 
 InterfaceForce_sd_2_ld_flux::InterfaceForce_sd_2_ld_flux(const InputParameters & parameters) :
     InterfaceKernel(parameters),
-    PostprocessorInterface(this),
-    VectorPostprocessorInterface(this),
     _driving_rate(getMaterialProperty<Real>(getParam<MaterialPropertyName>("driving_rate"))),
     _solubility_in_liquid(getMaterialProperty<Real>(getParam<MaterialPropertyName>("solubility_in_liquid"))),
     _solubility_in_solid(getMaterialProperty<Real>(getParam<MaterialPropertyName>("solubility_in_solid"))),
@@ -35,20 +33,6 @@ InterfaceForce_sd_2_ld_flux::InterfaceForce_sd_2_ld_flux(const InputParameters &
   {
     mooseError("In order to use the InterfaceForce_ld dgkernel, you must specify a boundary where it will live.");
   }
-}
-
-const PostprocessorValue &
-InterfaceForce_sd_2_ld_flux::getPostprocessorValue(const std::string & name)
-{
-  _depend_uo.insert(_pars.get<PostprocessorName>(name));
-  return PostprocessorInterface::getPostprocessorValue(name);
-}
-
-const PostprocessorValue &
-InterfaceForce_sd_2_ld_flux::getPostprocessorValueByName(const PostprocessorName & name)
-{
-  _depend_uo.insert(name);
-  return PostprocessorInterface::getPostprocessorValueByName(name);
 }
 
 Real

@@ -15,7 +15,7 @@ public:
   ADPrecipitation(const InputParameters & parameters);
 
 protected:
-  virtual ADResidual computeQpResidual() override;
+  virtual ADReal computeQpResidual() override;
 
   const ADReal PI;
   const ADMaterialProperty(Real) & _scale_factor;

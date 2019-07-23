@@ -30,7 +30,7 @@ ADPrecipitation_liquid<compute_stage>::ADPrecipitation_liquid(const InputParamet
 }
 
 template <ComputeStage compute_stage>
-ADResidual
+ADReal
 ADPrecipitation_liquid<compute_stage>::computeQpResidual()
 {
   ADReal r = 0.0;
