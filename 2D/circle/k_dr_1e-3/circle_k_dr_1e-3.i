@@ -1,58 +1,27 @@
 [Mesh]
   type = FileMesh
-  file = Porous_gap_1.e
-  #elem_type = QUAD4
-  second_order = true
+  file = circle_pore_gap.e
 []
 
 [MeshModifiers]
-
-###=== interfaces between the pore and the fuel
-  [./interface_from_pore_l]
+  [interface_from_pore]
     type = SideSetsBetweenSubdomains
     master_block = 'pore'
     paired_block = 'fuel_l'
-    new_boundary = master_pore_l_interface
-  [../]
-
-  # interface between the pore(master) and fuel
-  [./interface_from_pore_t]
-    type = SideSetsBetweenSubdomains
-    master_block = 'pore'
-    paired_block = 'fuel_t'
-    new_boundary = master_pore_t_interface
-  [../]
-
-  [./interface_from_pore_b]
-    type = SideSetsBetweenSubdomains
-    master_block = 'pore'
-    paired_block = 'fuel_b'
-    new_boundary = master_pore_b_interface
-  [../]
-
-###=== interface between the gap(master) and the fuel
-  [./interface_from_gap_r_fuel_t]
+    new_boundary = 'master_pore_l_interface'
+  []
+  [interface_from_g_r]
     type = SideSetsBetweenSubdomains
     master_block = 'gap_r'
-    paired_block = 'fuel_t'
-    new_boundary = master_gap_r_interface_fuel_t
-  [../]
-
-  [./interface_from_gap_r_fuel_b]
-    type = SideSetsBetweenSubdomains
-    master_block = 'gap_r'
-    paired_block = 'fuel_b'
-    new_boundary = master_gap_r_interface_fuel_b
-  [../]
-
-###=== d) surface of gap on the right
-  [./surface_gap_right_end]
+    paired_block = 'fuel_l'
+    new_boundary = 'master_gap_r_interface'
+  []
+  [surface_gap_right_end]
     type = SideSetsFromNormals
     normals = '1 0 0'
     variance = 1e-3
-    new_boundary = master_gap_r_end
-  [../]
-
+    new_boundary = 'master_gap_r_end'
+  []
 []
 
 [Variables]
@@ -60,12 +29,12 @@
   [S_precipitate]
     order = FIRST
     family = LAGRANGE
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
   []
   [S_dissolve]
     order = FIRST
     family = LAGRANGE
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
   []
   [L_dissolve]
     order = FIRST
@@ -83,12 +52,12 @@
   [T]
     order = FIRST
     family = LAGRANGE
-    block = 'fuel_l fuel_t fuel_b pore gap_r'
+    block = 'fuel_l pore gap_r'
   []
   [Solid_solubility_Ln]
     order = FIRST
     family = LAGRANGE
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
   []
   [Liquid_solubility_Ln]
     order = FIRST
@@ -129,28 +98,31 @@
 
 [Kernels]
   [Insolid_fuel_Ln_Generation_l]
+    # For now assume a constant Ln generation rate only in the fuel block
+    # function = Ln_Generation_Rate
+    # value = 7.9399 # Xiang atom per second
     type = BodyForce
     value = 8.5084 # my atom per second
     variable = S_dissolve
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
   []
   [InSolid_fuel_solute_dot]
     type = TimeDerivative
     variable = S_dissolve
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
   []
   [Insolid_fuel_solute_diffusion]
     # Material properties
     type = MatDiffusion
     variable = S_dissolve
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
     diffusivity = diffusivity_solid_sd
   []
   [Insolid_fuel_solute_Soret]
     # Materials Properties
     type = SoretDiffusion
     variable = S_dissolve
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
     T = 'T' # The later is the temperature name in the auxkernel
     diff_name = diffusivity_solid_sd
     Q_name = Qheat_solid_sd # Provide the transport heat
@@ -161,7 +133,7 @@
     type = ADPrecipitation
     unit_scalor = '3.7425e+10'
     variable = 'S_dissolve'
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
     precipitate_variable = 'S_precipitate'
     scale_factor = 'scale_solid'
     diffusivity = 'diffusivity_solid_sd'
@@ -170,7 +142,7 @@
   [Insolid_fuel_precipitation_dot]
     type = TimeDerivative
     variable = S_precipitate
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
   []
   [Insolid_fuel_precipitatate_redissolve]
     # Artifical parameters
@@ -178,7 +150,7 @@
     type = ADPrecipitation
     unit_scalor = '3.7425e+10'
     variable = 'S_precipitate'
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
     dissolve_variable = 'S_dissolve'
     scale_factor = 'scale_solid'
     diffusivity = 'diffusivity_solid_sd'
@@ -243,9 +215,9 @@
     type = ParsedAux
     variable = Solid_solubility_Ln
     constant_names = 'fraction density_fuel'
-    constant_expressions = '0.003 4.7378e10'
+    constant_expressions = '0.003 4.6719e10'
     function = 'fraction * density_fuel'
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
   []
   [Solubility_pore_relate_temperature]
     # # Use the relationship of Ce in liquid Cs
@@ -270,8 +242,7 @@
 []
 
 [InterfaceKernels]
-###=== Between the fuel and the pore
-  [interface_reaction_between_fuel_and_pore]
+  [interface_ld_reaction_l]
     # Materials properties
     # Artifical parameters
     type = InterfaceForce_sd_2_ld_flux
@@ -284,7 +255,7 @@
     solubility_in_solid = solubility_solid
     driving_rate = k_sd_ld
   []
-  [interface_diffusion_between_fuel_and_pore]
+  [interface_ld_reaction_l_Diffusion]
     type = InterfaceDiffusion
     variable = L_dissolve
     neighbor_var = 'S_dissolve'
@@ -292,52 +263,6 @@
     D = diffusivity_liquid
     D_neighbor = diffusivity_solid_sd
   []
-
-###=== Between the fuel and the gap
-  [interface_reaction_between_fuel_t_and_gap]
-    # Materials properties
-    # Artifical parameters
-    type = InterfaceForce_sd_2_ld_flux
-    variable = L_dissolve
-    neighbor_var = 'S_dissolve'
-    boundary = 'master_gap_r_interface_fuel_t'
-    diffusivity_in_liquid = diffusivity_liquid
-    diffusivity_in_solid = diffusivity_solid_sd
-    solubility_in_liquid = solubility_liquid
-    solubility_in_solid = solubility_solid
-    driving_rate = k_sd_ld
-  []
-  [interface_diffusion_between_fuel_t_and_gap]
-    type = InterfaceDiffusion
-    variable = L_dissolve
-    neighbor_var = 'S_dissolve'
-    boundary = 'master_gap_r_interface_fuel_t'
-    D = diffusivity_liquid
-    D_neighbor = diffusivity_solid_sd
-  []
-
-  [interface_reaction_between_fuel_b_and_gap]
-    # Materials properties
-    # Artifical parameters
-    type = InterfaceForce_sd_2_ld_flux
-    variable = L_dissolve
-    neighbor_var = 'S_dissolve'
-    boundary = 'master_gap_r_interface_fuel_b'
-    diffusivity_in_liquid = diffusivity_liquid
-    diffusivity_in_solid = diffusivity_solid_sd
-    solubility_in_liquid = solubility_liquid
-    solubility_in_solid = solubility_solid
-    driving_rate = k_sd_ld
-  []
-  [interface_diffusion_between_fuel_b_and_gap]
-    type = InterfaceDiffusion
-    variable = L_dissolve
-    neighbor_var = 'S_dissolve'
-    boundary = 'master_gap_r_interface_fuel_b'
-    D = diffusivity_liquid
-    D_neighbor = diffusivity_solid_sd
-  []
-
 []
 
 [BCs]
@@ -355,7 +280,7 @@
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
     prop_values = '1e-1'
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
   []
   [Diffusivity_Solid_fuel]
     # Arrhenius equation
@@ -365,9 +290,9 @@
     f_name = diffusivity_solid_sd
     args = 'T'
     constant_names = 'D0_d Q_d k'
-    constant_expressions = '3.61e4 1.172 8.61733e-5'
-    function = '1e-4 * D0_d * exp (-Q_d/k/T)'
-    block = 'fuel_l fuel_t fuel_b pore gap_r'
+    constant_expressions = '3.61e-8 1.171 8.61733e-5'
+    function = '1e8 * D0_d * exp (-Q_d/k/T)'
+    block = 'fuel_l pore'
   []
   [Diffusivity_Liquid_pore]
     # Arrhenius equation
@@ -406,15 +331,15 @@
   [Interface_Ln_Driving_force_constant]
     type = GenericConstantMaterial
     prop_names = 'k_sd_ld'
-    prop_values = '1e-4'
-    block = 'fuel_l fuel_t fuel_b pore gap_r'
+    prop_values = '1e-3'
+    block = 'fuel_l pore'
   []
   [scale_factor_Ln_precipitation]
     # scale_solid is R*C_sink, scale_liquid is k_lp
     type = GenericConstantMaterial
     prop_names = 'scale_solid scale_liquid'
     prop_values = '1e2 1e2'
-    block = 'fuel_l fuel_t fuel_b pore gap_r'
+    block = 'fuel_l pore gap_r'
   []
   [Solubility_Solid]
     # Arrhenius equation
@@ -424,7 +349,7 @@
     constant_names = 'fraction density_solid'
     constant_expressions = '0.003 4.6719e10'
     function = 'fraction * density_solid'
-    block = 'fuel_l fuel_t fuel_b pore gap_r'
+    block = 'fuel_l pore'
     outputs = 'exodus'
   []
   [Solubility_Liquid_pore]
@@ -543,72 +468,65 @@
 []
 
 [VectorPostprocessors]
-  [./S_dissolve_distribution]
+  [S_dissolve_distribution]
     type = LineValueSampler
-    variable = S_dissolve
-    start_point = '0 35 0'
-    end_point = '100 35 0'
-    num_points = 1000
+    variable = 'S_dissolve'
+    start_point = '0 0 0'
+    end_point = '20 0 0'
+    num_points = 300
     sort_by = x
     outputs = 'CenterlineFinalValue'
-  [../]
-
-  [./S_precipitate_distribution]
+  []
+  [S_precipitate_distribution]
     type = LineValueSampler
-    variable = S_precipitate
-    start_point = '0 35 0'
-    end_point = '100 35 0'
-    num_points = 1000
+    variable = 'S_precipitate'
+    start_point = '0 0 0'
+    end_point = '20 0 0'
+    num_points = 300
     sort_by = x
     outputs = 'CenterlineFinalValue'
-  [../]
-
-  [./L_dissolve_distribution]
+  []
+  [L_dissolve_distribution]
     type = LineValueSampler
-    variable = L_dissolve
-    start_point = '0 35 0'
-    end_point = '100 35 0'
-    num_points = 1000
+    variable = 'L_dissolve'
+    start_point = '20 0 0'
+    end_point = '60 0 0'
+    num_points = 600
     sort_by = x
     outputs = 'CenterlineFinalValue'
-  [../]
-
-  [./L_precipitate_distribution]
+  []
+  [L_precipitate_distribution]
     type = LineValueSampler
-    variable = L_precipitate
-    start_point = '0 35 0'
-    end_point = '100 35 0'
-    num_points = 1000
+    variable = 'L_precipitate'
+    start_point = '20 0 0'
+    end_point = '60 0 0'
+    num_points = 600
     sort_by = x
     outputs = 'CenterlineFinalValue'
-  [../]
-
-  [./Ln_solubility_fuel_distribution]
+  []
+  [Ln_solubility_fuel_distribution]
     type = LineValueSampler
-    variable = Solid_solubility_Ln
-    start_point = '0 35 0'
-    end_point = '100 35 0'
-    num_points = 1000
+    variable = 'Solid_solubility_Ln'
+    start_point = '0 0 0'
+    end_point = '60 0 0'
+    num_points = 600
     sort_by = x
     outputs = 'CenterlineFinalValue'
-  [../]
-
-  [./Ln_solubility_pore_distribution]
+  []
+  [Ln_solubility_pore_distribution]
     type = LineValueSampler
-    variable = Liquid_solubility_Ln
-    start_point = '0 35 0'
-    end_point = '100 35 0'
-    num_points = 1000
+    variable = 'Liquid_solubility_Ln'
+    start_point = '0 0 0'
+    end_point = '60 0 0'
+    num_points = 600
     sort_by = x
     outputs = 'CenterlineFinalValue'
-  [../]
-
-  [./Integeral_Ln_different_sum]
+  []
+  [Integeral_Ln_different_sum]
     type = VectorOfPostprocessors
     postprocessors = 'sum_S_dissolve sum_S_precipitate sum_L_dissolve sum_L_precipitate Total_Ln_sum'
     outputs = 'CenterlineFinalValue'
-  [../]
-
+  []
   [Ave_gap_right_side_and_volume]
     type = VectorOfPostprocessors
     postprocessors = 'L_precipitate_Ave_side_r L_dissolve_Ave_side_r avg_L_precipitate_pore_gap_r avg_L_dissolve_pore_gap_r avg_S_precipitate_fuel_l avg_S_dissolve_fuel_l'
@@ -617,7 +535,7 @@
 []
 
 [Executioner]
-  #end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
+  # end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
   type = Transient
   end_time = 2.48832e+7 # ## 5% burnup for a fast test
   solve_type = PJFNK
@@ -676,7 +594,7 @@
     lower = 0
     bounded_variable = 'S_precipitate'
     variable = bounds_dummy_S_precipitate
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
   []
   [S_dissolve_bounds]
     # set this bound not below 0
@@ -684,6 +602,6 @@
     lower = 0
     bounded_variable = 'S_dissolve'
     variable = bounds_dummy_S_dissolve
-    block = 'fuel_l fuel_t fuel_b'
+    block = 'fuel_l'
   []
 []

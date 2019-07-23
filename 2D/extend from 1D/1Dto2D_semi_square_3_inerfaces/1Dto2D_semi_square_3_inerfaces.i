@@ -10,39 +10,27 @@
     dy = '10 10'
     ix = '20 20 20'
     iy = '10 10'
-    subdomain_id = '0 1 2 0 3 2'
+    subdomain_id = '0 1 2 0 0 2'
   []
 []
 
 [MeshModifiers]
   [renameblock]
     type = RenameBlock
-    old_block_id = '0 1 2 3'
-    new_block_name = 'fuel_l pore gap_r fuel_t'
+    old_block_id = '0 1 2'
+    new_block_name = 'fuel_l pore gap_r'
   []
-  [interface_from_pore_l]
+  [interface_from_pore]
     type = SideSetsBetweenSubdomains
     master_block = '1'
     paired_block = '0'
-    new_boundary = 'master_pore_l_interface'
+    new_boundary = 'master_pore_interface'
   []
   [interface_from_g_r]
     type = SideSetsBetweenSubdomains
     master_block = '2'
-    paired_block = '1'
+    paired_block = '0'
     new_boundary = 'master_gap_r_interface'
-  []
-  [interface_from_g_r_fuel_t]
-    type = SideSetsBetweenSubdomains
-    master_block = '2'
-    paired_block = '3'
-    new_boundary = 'master_gap_r_interface_fuel_t'
-  []
-  [interface_from_pore_fuel_t]
-    type = SideSetsBetweenSubdomains
-    master_block = '1'
-    paired_block = '3'
-    new_boundary = 'master_pore_fuel_t'
   []
 []
 
@@ -51,12 +39,12 @@
   [S_precipitate]
     order = FIRST
     family = LAGRANGE
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [S_dissolve]
     order = FIRST
     family = LAGRANGE
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [L_dissolve]
     order = FIRST
@@ -74,12 +62,12 @@
   [T]
     order = FIRST
     family = LAGRANGE
-    block = 'fuel_l fuel_t pore gap_r'
+    block = 'fuel_l pore gap_r'
   []
   [Solid_solubility_Ln]
     order = FIRST
     family = LAGRANGE
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [Liquid_solubility_Ln]
     order = FIRST
@@ -126,25 +114,25 @@
     type = BodyForce
     value = 8.5084 # my atom per second
     variable = S_dissolve
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [InSolid_fuel_solute_dot]
     type = TimeDerivative
     variable = S_dissolve
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [Insolid_fuel_solute_diffusion]
     # Material properties
     type = MatDiffusion
     variable = S_dissolve
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
     diffusivity = diffusivity_solid_sd
   []
   [Insolid_fuel_solute_Soret]
     # Materials Properties
     type = SoretDiffusion
     variable = S_dissolve
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
     T = 'T' # The later is the temperature name in the auxkernel
     diff_name = diffusivity_solid_sd
     Q_name = Qheat_solid_sd # Provide the transport heat
@@ -155,7 +143,7 @@
     type = ADPrecipitation
     unit_scalor = '3.7425e+10'
     variable = 'S_dissolve'
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
     precipitate_variable = 'S_precipitate'
     scale_factor = 'scale_solid'
     diffusivity = 'diffusivity_solid_sd'
@@ -164,7 +152,7 @@
   [Insolid_fuel_precipitation_dot]
     type = TimeDerivative
     variable = S_precipitate
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [Insolid_fuel_precipitatate_redissolve]
     # Artifical parameters
@@ -172,7 +160,7 @@
     type = ADPrecipitation
     unit_scalor = '3.7425e+10'
     variable = 'S_precipitate'
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
     dissolve_variable = 'S_dissolve'
     scale_factor = 'scale_solid'
     diffusivity = 'diffusivity_solid_sd'
@@ -239,7 +227,7 @@
     constant_names = 'fraction density_fuel'
     constant_expressions = '0.003 4.6719e10'
     function = 'fraction * density_fuel'
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [Solubility_pore_relate_temperature]
     # # Use the relationship of Ce in liquid Cs
@@ -264,68 +252,46 @@
 []
 
 [InterfaceKernels]
-  [interface_ld_reaction_l]
+  [interface_ld_reaction_l_10]
     # Materials properties
     # Artifical parameters
     type = InterfaceForce_sd_2_ld_flux
     variable = L_dissolve
     neighbor_var = 'S_dissolve'
-    boundary = 'master_pore_l_interface'
+    boundary = 'master_pore_interface'
     diffusivity_in_liquid = diffusivity_liquid
     diffusivity_in_solid = diffusivity_solid_sd
     solubility_in_liquid = solubility_liquid
     solubility_in_solid = solubility_solid
     driving_rate = k_sd_ld
   []
-  [interface_ld_reaction_l_Diffusion]
+  [interface_ld_reaction_l_Diffusion_10]
     type = InterfaceDiffusion
     variable = L_dissolve
     neighbor_var = 'S_dissolve'
-    boundary = 'master_pore_l_interface'
+    boundary = 'master_pore_interface'
     D = diffusivity_liquid
     D_neighbor = diffusivity_solid_sd
   []
 
-  [interface_ld_reaction_l_23]
+  [interface_ld_reaction_l_20]
     # Materials properties
     # Artifical parameters
     type = InterfaceForce_sd_2_ld_flux
     variable = L_dissolve
     neighbor_var = 'S_dissolve'
-    boundary = 'master_gap_r_interface_fuel_t'
+    boundary = 'master_gap_r_interface'
     diffusivity_in_liquid = diffusivity_liquid
     diffusivity_in_solid = diffusivity_solid_sd
     solubility_in_liquid = solubility_liquid
     solubility_in_solid = solubility_solid
     driving_rate = k_sd_ld
   []
-  [interface_ld_reaction_l_Diffusion_23]
+  [interface_ld_reaction_l_Diffusion_20]
     type = InterfaceDiffusion
     variable = L_dissolve
     neighbor_var = 'S_dissolve'
-    boundary = 'master_gap_r_interface_fuel_t'
-    D = diffusivity_liquid
-    D_neighbor = diffusivity_solid_sd
-  []
-
-  [interface_ld_reaction_l_13]
-    # Materials properties
-    # Artifical parameters
-    type = InterfaceForce_sd_2_ld_flux
-    variable = L_dissolve
-    neighbor_var = 'S_dissolve'
-    boundary = 'master_pore_fuel_t'
-    diffusivity_in_liquid = diffusivity_liquid
-    diffusivity_in_solid = diffusivity_solid_sd
-    solubility_in_liquid = solubility_liquid
-    solubility_in_solid = solubility_solid
-    driving_rate = k_sd_ld
-  []
-  [interface_ld_reaction_l_Diffusion_13]
-    type = InterfaceDiffusion
-    variable = L_dissolve
-    neighbor_var = 'S_dissolve'
-    boundary = 'master_pore_fuel_t'
+    boundary = 'master_gap_r_interface'
     D = diffusivity_liquid
     D_neighbor = diffusivity_solid_sd
   []
@@ -346,7 +312,7 @@
     type = GenericConstantMaterial
     prop_names = 'Qheat_solid_sd'
     prop_values = '1e-1'
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [Diffusivity_Solid_fuel]
     # Arrhenius equation
@@ -358,7 +324,7 @@
     constant_names = 'D0_d Q_d k'
     constant_expressions = '3.61e-8 1.171 8.61733e-5'
     function = '1e8 * D0_d * exp (-Q_d/k/T)'
-    block = 'fuel_l fuel_t pore'
+    block = 'fuel_l pore'
   []
   [Diffusivity_Liquid_pore]
     # Arrhenius equation
@@ -400,14 +366,14 @@
     type = GenericConstantMaterial
     prop_names = 'k_sd_ld'
     prop_values = '1e-4'
-    block = 'fuel_l fuel_t pore'
+    block = 'fuel_l pore'
   []
   [scale_factor_Ln_precipitation]
     # scale_solid is R*C_sink, scale_liquid is k_lp
     type = GenericConstantMaterial
     prop_names = 'scale_solid scale_liquid'
     prop_values = '1e2 1e2'
-    block = 'fuel_l fuel_t pore gap_r'
+    block = 'fuel_l pore gap_r'
   []
   [Solubility_Solid]
     # Arrhenius equation
@@ -417,7 +383,7 @@
     constant_names = 'fraction density_solid'
     constant_expressions = '0.003 4.6719e10'
     function = 'fraction * density_solid'
-    block = 'fuel_l fuel_t pore'
+    block = 'fuel_l pore'
     outputs = 'exodus'
   []
   [Solubility_Liquid_pore]
@@ -459,7 +425,7 @@
   [L_precipitate_Ave_side_l]
     type = SideAverageValue
     variable = 'L_precipitate'
-    boundary = 'master_pore_l_interface'
+    boundary = 'master_pore_interface'
     outputs = 'exodus'
   []
   [L_precipitate_Ave_side_r]
@@ -471,7 +437,7 @@
   [L_dissolve_Ave_side_l]
     type = SideAverageValue
     variable = 'L_dissolve'
-    boundary = 'master_pore_l_interface'
+    boundary = 'master_pore_interface'
     outputs = 'exodus'
   []
   [L_dissolve_Ave_side_r]
@@ -662,7 +628,7 @@
     lower = 0
     bounded_variable = 'S_precipitate'
     variable = bounds_dummy_S_precipitate
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
   [S_dissolve_bounds]
     # set this bound not below 0
@@ -670,6 +636,6 @@
     lower = 0
     bounded_variable = 'S_dissolve'
     variable = bounds_dummy_S_dissolve
-    block = 'fuel_l fuel_t'
+    block = 'fuel_l'
   []
 []
