@@ -1,9 +1,0 @@
-
-k_sd_ld <= 1e-7  will not have precipitates in liquid, accumilation on interface in solid side;
-
-1e-7 <= k_sd_ld < 1e-6 will need lots of time steps, difficult to reach the final time;
-
-1e-6 <= k_sd_ld <= 1e-4 will be appropriate;
-
-1e-4 < k_sd_ld  (5e-4, 1e-3, 1e-2) will not have precipitates in liquid, negative value for in solute dissolved in liquid (C_l_d);
-

@@ -1,9 +1,0 @@
-
-2e-7, 6e-7(not very smooth), 2e-6(not very smooth), 3e-6,  2e-5, works
-
-
-Smaller driving rate, less driving force, more precipitates in fuel less diffuse to liquid.
-
-
-
-(1e-5, 3e-5, 4e-5, 5e-5,   1e-4, 2e-4, 1e-3) will not have precipitates in liquid, negative value for in solute dissolved in liquid (C_l_d);
