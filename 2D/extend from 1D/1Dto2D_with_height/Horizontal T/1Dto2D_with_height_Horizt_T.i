@@ -566,7 +566,7 @@
   # end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
   type = Transient
   end_time = 2.48832e+7 # ## 5% burnup for a fast test
-  solve_type = PJFNK
+  solve_type = NEWTON
   petsc_options_iname = '-pc_type -pc_hypre_type -snes_type'
   petsc_options_value = 'hypre boomeramg vinewtonrsls'
   dt = 100

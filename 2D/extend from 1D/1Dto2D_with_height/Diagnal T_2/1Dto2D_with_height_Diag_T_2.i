@@ -6,10 +6,10 @@
   [mesh_split]
     type = CartesianMeshGenerator
     dim = 2
-    dx = '12 8 1 18 1 12 8'
-    ix = '12 24 3 18 3 12 24'
+    dx = '12 8 1 18 1 5 15'
+    ix = '12 24 3 18 3 5 45'
     subdomain_id = '0 0 1 1 1 2 2'
-    iy = '10'
+    iy = '30'
     dy = '10'
   []
 []
