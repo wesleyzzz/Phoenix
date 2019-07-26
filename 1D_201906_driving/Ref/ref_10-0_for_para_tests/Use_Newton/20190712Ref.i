@@ -1,19 +1,45 @@
 [Mesh]
-  type = FileMesh
-  file = circle_pore_gap.e
+  type = MeshGeneratorMesh
+[]
+
+[MeshGenerators]
+  [mesh_split]
+    type = CartesianMeshGenerator
+    dim = 1
+    dx = '12 8 1 18 1 12 8'
+    ix = '12 40 3 18 3 12 40'
+    subdomain_id = '0 0 1 1 1 2 2'
+  []
 []
 
 [MeshModifiers]
-  [interface_from_pore]
+  [renameblock]
+    type = RenameBlock
+    old_block_id = '0 1 2'
+    new_block_name = 'fuel_l pore gap_r'
+  []
+  [interface_from_s_l]
     type = SideSetsBetweenSubdomains
-    master_block = 'pore'
-    paired_block = 'fuel_l'
+    master_block = '0'
+    paired_block = '1'
+    new_boundary = 'master_fuel_l_interface'
+  []
+  [interface_from_pore_l]
+    type = SideSetsBetweenSubdomains
+    master_block = '1'
+    paired_block = '0'
     new_boundary = 'master_pore_l_interface'
+  []
+  [interface_from_pore_r]
+    type = SideSetsBetweenSubdomains
+    master_block = '1'
+    paired_block = '2'
+    new_boundary = 'master_pore_r_interface'
   []
   [interface_from_g_r]
     type = SideSetsBetweenSubdomains
-    master_block = 'gap_r'
-    paired_block = 'fuel_l'
+    master_block = '2'
+    paired_block = '1'
     new_boundary = 'master_gap_r_interface'
   []
   [surface_gap_right_end]
@@ -263,6 +289,7 @@
     D = diffusivity_liquid
     D_neighbor = diffusivity_solid_sd
   []
+
 []
 
 [BCs]
@@ -535,10 +562,10 @@
 []
 
 [Executioner]
-  # end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
+  #end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
   type = Transient
   end_time = 2.48832e+7 # ## 5% burnup for a fast test
-  solve_type = NEWTON # NEWTON can be parallelized well, it can improve solving speed with AD kernel in this case
+  solve_type = NEWTON
   petsc_options_iname = '-pc_type -pc_hypre_type -snes_type'
   petsc_options_value = 'hypre boomeramg vinewtonrsls'
   dt = 100

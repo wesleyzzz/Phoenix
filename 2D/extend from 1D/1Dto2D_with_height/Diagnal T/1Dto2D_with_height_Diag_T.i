@@ -1,19 +1,47 @@
 [Mesh]
-  type = FileMesh
-  file = circle_pore_gap.e
+  type = MeshGeneratorMesh
+[]
+
+[MeshGenerators]
+  [mesh_split]
+    type = CartesianMeshGenerator
+    dim = 2
+    dx = '12 8 1 18 1 12 8'
+    ix = '12 24 3 18 3 12 24'
+    subdomain_id = '0 0 1 1 1 2 2'
+    iy = '10'
+    dy = '10'
+  []
 []
 
 [MeshModifiers]
-  [interface_from_pore]
+  [renameblock]
+    type = RenameBlock
+    old_block_id = '0 1 2'
+    new_block_name = 'fuel_l pore gap_r'
+  []
+  [interface_from_s_l]
     type = SideSetsBetweenSubdomains
-    master_block = 'pore'
-    paired_block = 'fuel_l'
+    master_block = '0'
+    paired_block = '1'
+    new_boundary = 'master_fuel_l_interface'
+  []
+  [interface_from_pore_l]
+    type = SideSetsBetweenSubdomains
+    master_block = '1'
+    paired_block = '0'
     new_boundary = 'master_pore_l_interface'
+  []
+  [interface_from_pore_r]
+    type = SideSetsBetweenSubdomains
+    master_block = '1'
+    paired_block = '2'
+    new_boundary = 'master_pore_r_interface'
   []
   [interface_from_g_r]
     type = SideSetsBetweenSubdomains
-    master_block = 'gap_r'
-    paired_block = 'fuel_l'
+    master_block = '2'
+    paired_block = '1'
     new_boundary = 'master_gap_r_interface'
   []
   [surface_gap_right_end]
@@ -77,10 +105,11 @@
 [Functions]
   # Postprocessor Functions
   [Temp_Interpolation]
+    # 855 at top left corner
     type = ParsedFunction
-    value = 'origin_temp + gradient_x * abs(x - startpoint_x)'
-    vars = 'origin_temp startpoint_x gradient_x'
-    vals = '855 0.0 -0.05'
+    value = 'origin_temp + gradient_x * abs(x - startpoint_x) + gradient_y * abs(y - startpoint_y)'
+    vars = 'origin_temp startpoint_x gradient_x startpoint_y gradient_y'
+    vals = '855 0.0 -0.05 10.0 -0.05'
   []
   [Ln_Generation_Rate]
     type = ParsedFunction
@@ -535,10 +564,9 @@
 []
 
 [Executioner]
-  # end_time = 4.97664e+7 # ## 288 effective full power days 5% burnup extend to 10%
   type = Transient
-  end_time = 2.48832e+7 # ## 5% burnup for a fast test
-  solve_type = NEWTON # NEWTON can be parallelized well, it can improve solving speed with AD kernel in this case
+  end_time = 2.48832e+7
+  solve_type = NEWTON
   petsc_options_iname = '-pc_type -pc_hypre_type -snes_type'
   petsc_options_value = 'hypre boomeramg vinewtonrsls'
   dt = 100
